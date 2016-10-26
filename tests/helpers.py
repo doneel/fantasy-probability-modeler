@@ -5,6 +5,7 @@ import pandas as pd
 
 def assert_frames_equal(actual, expected, use_close=False):
     """
+    Source: http://nbviewer.jupyter.org/gist/jiffyclub/ac2e7506428d5e1d587b
     Compare DataFrame items by index and column and
     raise AssertionError if any item is not equal.
 
