@@ -18,10 +18,10 @@ def test_mean_var_scores():
         'team1': [1, 0],
         'team2': [5.0, 50.0],
         'team3': [2.5, 5/3]
-    }) \
-        .transpose() \
-        .reset_index(level=0) \
-        .rename(columns={'index': 'team', 0: 'mean', 1: 'var'})
+      }) \
+     .transpose() \
+     .reset_index(level=0) \
+     .rename(columns={'index': 'team', 0: 'mean', 1: 'var'})
 
     actual = ffl_predictor.mean_var_scores(raw_data)
     assert_frames_equal(expected, actual, use_close=True)
