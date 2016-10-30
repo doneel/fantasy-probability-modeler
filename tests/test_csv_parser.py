@@ -25,7 +25,9 @@ def test_read_scores(scores_file_fixture):
         ('team2', 1, 0.0), ('team2', 2, 10.0),
         ('team3', 1, 1.0), ('team3', 1, 2.0), ('team3', 1, 3.0), ('team3', 1, 4.0)],
         dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)]))
-    assert_frames_equal(ffl_predictor.read_scores(scores_file_fixture.strpath), expected)
+    assert_frames_equal(
+            ffl_predictor.read_scores(scores_file_fixture.strpath),
+            expected)
 
 @pytest.fixture()
 def schedule_file_fixture(tmpdir):
@@ -68,4 +70,6 @@ def test_read_schedule(schedule_file_fixture):
         ('sh', 'rj', 4),
         ('es', 'js', 4)],
         dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)]))
-    assert_frames_equal(ffl_predictor.read_schedule(schedule_file_fixture.strpath), expected, use_close=True)
+    assert_frames_equal(
+            ffl_predictor.read_schedule(schedule_file_fixture.strpath),
+            expected)
