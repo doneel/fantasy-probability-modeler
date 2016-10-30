@@ -1,48 +1,48 @@
-do, rj, 1
-rt, js, 1
-km, sh, 1
-va, es, 1
-rt, do, 2
-rj, js, 2
-va, km, 2
-sh, es, 2
-do, js, 3
-rj, rt, 3
-km, es, 3
-sh, va, 3
-km, do, 4
-va, rt, 4
-sh, rj, 4
-es, js, 4
-do, es, 5
-rt, sh, 5
-rt, km, 5
-js, va, 5
-va, do, 6
-km, rt, 6
-sh, js, 6
-es, rt, 6
-do, sh, 7
-js, km, 7
-rj, va, 7
-rt, es, 7
-rj, do, 8
-js, rt, 8
-sh, km, 8
-es, va, 8
-do, rt, 9
-js, rj, 9
-km, va, 9
-es, sh, 9
-js, do, 10 
-rt, rj, 10
-es, km, 10
-va, sh, 10
-km, do, 11
-sh, rj, 11
-va, rt, 11
-es, js, 11
-do, es, 12
-rj, km, 12
-rt, sh, 12
-js, va, 12
+do,rj, 1
+rt,js, 1
+km,sh, 1
+va,es, 1
+rt,do, 2
+rj,js, 2
+va,km, 2
+sh,es, 2
+do,js, 3
+rj,rt, 3
+km,es, 3
+sh,va, 3
+km,do, 4
+va,rt, 4
+sh,rj, 4
+es,js, 4
+do,es, 5
+rt,sh, 5
+rt,km, 5
+js,va, 5
+va,do, 6
+km,rt, 6
+sh,js, 6
+es,rt, 6
+do,sh, 7
+js,km, 7
+rj,va, 7
+rt,es, 7
+rj,do, 8
+js,rt, 8
+sh,km, 8
+es,va, 8
+do,rt, 9
+js,rj, 9
+km,va, 9
+es,sh, 9
+js,do, 10 
+rt,rj, 10
+es,km, 10
+va,sh, 10
+km,do, 11
+sh,rj, 11
+va,rt, 11
+es,js, 11
+do,es, 12
+rj,km, 12
+rt,sh, 12
+js,va, 12
