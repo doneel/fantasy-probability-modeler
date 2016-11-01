@@ -6,7 +6,7 @@ from ffl_predictor import Season
 from ffl_predictor import SeasonSimulator
 import pytest
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def sample_season():
     scores = pd.DataFrame(np.array([
         ('team1', 1, 1.0), ('team1', 2, 1.0),
@@ -33,9 +33,15 @@ class DummySeasonSimulator(SeasonSimulator):
 def test_valid_season_for_simulation_true(sample_season):
     assert DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
 
-def test_valid_season_for_simulation_false(sample_season):
-    invalid_scores = sample_season.scores.append(pd.DataFrame(np.array(
+def test_valid_season_for_simulation_extra_score(sample_season):
+    sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
         [('team1', 3, 4.0)],
         dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
-    invalid_season = Season(sample_season.schedule, invalid_scores)
-    assert not DummySeasonSimulator(invalid_season).is_valid_season_for_simulation()
+    assert not DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
+
+def test_valid_season_for_simulation_duplicate_game(sample_season):
+     sample_season.schedule = sample_season.schedule.append(pd.DataFrame(np.array([
+        ('team1', 'team3', 2)],
+        dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)])))
+     assert not DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
+
