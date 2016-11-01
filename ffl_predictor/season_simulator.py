@@ -27,7 +27,7 @@ class RegularSeasonSimulator(metaclass=ABCMeta):
             raise SeasonStateException('Teams cannot have more scores than games on their schedule')
 
         if(len(played_games.unique()) != 1 or \
-                len(schedule_lengths.unique()) != 1):
+           len(schedule_lengths.unique()) != 1):
             raise SeasonStateException('All teams must have same schedule length')
 
     @staticmethod
