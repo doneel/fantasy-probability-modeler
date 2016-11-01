@@ -34,31 +34,31 @@ def sample_season():
     return Season(schedule, scores)
 
 def test_valid_season_for_simulation_true(sample_season):
-    DummyRegularSeasonSimulator(sample_season).is_valid_season_for_simulation()
+    DummyRegularSeasonSimulator(sample_season)
 
 def test_valid_season_for_simulation_extra_score(sample_season):
     with pytest.raises(SeasonStateException):
         sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
             [('team1', 3, 4.0)],
             dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
-        DummyRegularSeasonSimulator(sample_season).is_valid_season_for_simulation()
+        DummyRegularSeasonSimulator(sample_season)
 
 def test_valid_season_for_simulation_duplicate_game(sample_season):
     with pytest.raises(SeasonStateException):
         sample_season.schedule = sample_season.schedule.append(pd.DataFrame(np.array([
             ('team1', 'team3', 2)],
             dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)])))
-        DummyRegularSeasonSimulator(sample_season).is_valid_season_for_simulation()
+        DummyRegularSeasonSimulator(sample_season)
 
 def test_valid_season_for_simulation_too_many_scores(sample_season):
     with pytest.raises(SeasonStateException):
         sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
             [('team1', 3, 4.0), ('team1', 4, 4.0)],
             dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
-        DummyRegularSeasonSimulator(sample_season).is_valid_season_for_simulation()
+        DummyRegularSeasonSimulator(sample_season)
 
 def test_has_unplayed_games_true(sample_season):
-    DummyRegularSeasonSimulator(sample_season).has_unplayed_games()
+    DummyRegularSeasonSimulator(sample_season)
 
 def test_has_unplayed_games_false(sample_season):
     with pytest.raises(RegularSeasonSimulationException):
@@ -68,4 +68,4 @@ def test_has_unplayed_games_false(sample_season):
             ('team3', 4, 4.0),
             ('team4', 3, 4.0)],
             dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
-        DummyRegularSeasonSimulator(sample_season).has_unplayed_games()
+        DummyRegularSeasonSimulator(sample_season)

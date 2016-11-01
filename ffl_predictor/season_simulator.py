@@ -7,24 +7,21 @@ class RegularSeasonSimulator(metaclass=ABCMeta):
     """ Simulates remaining games in schedule for which there are no recorded scores """
 
     def __init__(self, season):
+        RegularSeasonSimulator._is_valid_season_for_simulation(season)
+        RegularSeasonSimulator._has_unplayed_games(season)
         self.season = season
 
     @abstractmethod
     def simulate(self, season):
         pass
 
-    def has_unplayed_games(self):
-        remaining_games = (self.__get_schedule_length_per_team()
-                .subtract(self.__get_played_games_per_team()))
-        if remaining_games.sum() < 1:
-            raise RegularSeasonSimulationException("There are no unplayed regular season games remaining in this season")
+    @staticmethod
+    def _is_valid_season_for_simulation(season):
+        played_games = RegularSeasonSimulator._get_played_games_per_team(season.scores)
+        schedule_lengths = RegularSeasonSimulator._get_schedule_length_per_team(season.schedule)
 
-    def is_valid_season_for_simulation(self):
-        played_games = self.__get_played_games_per_team()
-        schedule_lengths = self.__get_schedule_length_per_team()
-
-        if not (self.__get_schedule_length_per_team()
-                .subtract(self.__get_played_games_per_team())
+        if not (schedule_lengths
+                .subtract(played_games)
                 .loc[lambda x: x < 0]
                 .empty):
             raise SeasonStateException('Teams cannot have more scores than games on their schedule')
@@ -33,14 +30,23 @@ class RegularSeasonSimulator(metaclass=ABCMeta):
                 len(schedule_lengths.unique()) != 1):
             raise SeasonStateException('All teams must have same schedule length')
 
-    def __get_played_games_per_team(self):
-        return (self.season.scores[['team', 'week']]
+    @staticmethod
+    def _has_unplayed_games(season):
+        remaining_games = (RegularSeasonSimulator._get_schedule_length_per_team(season.schedule)
+                .subtract(RegularSeasonSimulator._get_played_games_per_team(season.scores)))
+        if remaining_games.sum() < 1:
+            raise RegularSeasonSimulationException("There are no unplayed regular season games remaining in this season")
+
+    @staticmethod
+    def _get_played_games_per_team(scores):
+        return (scores[['team', 'week']]
             .groupby('team', as_index=False)
             .size())
 
-    def __get_schedule_length_per_team(self):
-        return (self.season.schedule['t1']
-                .append(self.season.schedule['t2'])
+    @staticmethod
+    def _get_schedule_length_per_team(schedule):
+        return (schedule['t1']
+                .append(schedule['t2'])
                 .value_counts())
 
 
