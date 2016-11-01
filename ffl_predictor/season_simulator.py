@@ -21,8 +21,16 @@ class SeasonSimulator(metaclass=ABCMeta):
             raise SeasonSimulationException("There are no unplayed regular season games remaining in this season")
 
     def is_valid_season_for_simulation(self):
-        if(len(self.__get_played_games_per_team().unique()) != 1 or \
-                len(self.__get_schedule_length_per_team().unique()) != 1):
+        played_games = self.__get_played_games_per_team()
+        schedule_lengths = self.__get_schedule_length_per_team()
+        if not (self.__get_schedule_length_per_team()
+                .subtract(self.__get_played_games_per_team())
+                .loc[lambda x: x < 0]
+                .empty):
+            raise SeasonStateException('Teams cannot have more scores than games on their schedule')
+
+        if(len(played_games.unique()) != 1 or \
+                len(schedule_lengths.unique()) != 1):
             raise SeasonStateException('All teams must have same schedule length')
 
     def __get_played_games_per_team(self):

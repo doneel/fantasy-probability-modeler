@@ -49,6 +49,13 @@ def test_valid_season_for_simulation_duplicate_game(sample_season):
             dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)])))
          DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
 
+def test_valid_season_for_simulation_too_many_scores(sample_season):
+    with pytest.raises(SeasonStateException):
+        sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
+            [('team1', 3, 4.0), ('team1', 4, 4.0)],
+            dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
+        DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
+
 def test_has_unplayed_games_true(sample_season):
          DummySeasonSimulator(sample_season).has_unplayed_games()
 
