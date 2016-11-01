@@ -3,6 +3,5 @@ from .season import Season
 from .season import SeasonStateException
 from .csv_parser import read_scores
 from .csv_parser import read_schedule
-from .season_simulator import SeasonSimulator
-from .season_simulator import SeasonSimulationException
-
+from .season_simulator import RegularSeasonSimulator
+from .season_simulator import RegularSeasonSimulationException

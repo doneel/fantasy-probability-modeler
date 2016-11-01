@@ -3,7 +3,7 @@ from abc import ABCMeta
 from abc import abstractmethod
 from ffl_predictor import SeasonStateException
 
-class SeasonSimulator(metaclass=ABCMeta):
+class RegularSeasonSimulator(metaclass=ABCMeta):
     """ Simulates remaining games in schedule for which there are no recorded scores """
 
     def __init__(self, season):
@@ -17,7 +17,7 @@ class SeasonSimulator(metaclass=ABCMeta):
         remaining_games = (self.__get_schedule_length_per_team()
                 .subtract(self.__get_played_games_per_team()))
         if remaining_games.sum() < 1:
-            raise SeasonSimulationException("There are no unplayed regular season games remaining in this season")
+            raise RegularSeasonSimulationException("There are no unplayed regular season games remaining in this season")
 
     def is_valid_season_for_simulation(self):
         played_games = self.__get_played_games_per_team()
@@ -44,6 +44,6 @@ class SeasonSimulator(metaclass=ABCMeta):
                 .value_counts())
 
 
-class SeasonSimulationException(Exception):
+class RegularSeasonSimulationException(Exception):
     """ Signifies an unrecoverable error during simulation """
     pass
