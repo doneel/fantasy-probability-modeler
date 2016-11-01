@@ -18,7 +18,9 @@ def sample_season():
         ('team1', 'team2', 1),
         ('team3', 'team4', 1),
         ('team1', 'team3', 2),
-        ('team2', 'team4', 2)],
+        ('team2', 'team4', 2),
+        ('team1', 'team4', 3),
+        ('team2', 'team3', 3)],
         dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)]))
     return Season(schedule, scores)
 
@@ -28,6 +30,12 @@ class DummySeasonSimulator(SeasonSimulator):
     def simulate(self, season):
         return season
 
-def test_check_number_played_games_equal(sample_season):
-    DummySeasonSimulator(sample_season).check_number_played_games_equal()
-    assert(1 == 2)
+def test_valid_season_for_simulation_true(sample_season):
+    assert DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
+
+def test_valid_season_for_simulation_false(sample_season):
+    invalid_scores = sample_season.scores.append(pd.DataFrame(np.array(
+        [('team1', 3, 4.0)],
+        dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
+    invalid_season = Season(sample_season.schedule, invalid_scores)
+    assert not DummySeasonSimulator(invalid_season).is_valid_season_for_simulation()
