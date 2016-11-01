@@ -16,13 +16,13 @@ class SeasonSimulator(metaclass=ABCMeta):
     def has_unplayed_games(self):
         remaining_games = (self.__get_schedule_length_per_team()
                 .subtract(self.__get_played_games_per_team()))
-        print(remaining_games)
         if remaining_games.sum() < 1:
             raise SeasonSimulationException("There are no unplayed regular season games remaining in this season")
 
     def is_valid_season_for_simulation(self):
         played_games = self.__get_played_games_per_team()
         schedule_lengths = self.__get_schedule_length_per_team()
+
         if not (self.__get_schedule_length_per_team()
                 .subtract(self.__get_played_games_per_team())
                 .loc[lambda x: x < 0]
@@ -42,6 +42,7 @@ class SeasonSimulator(metaclass=ABCMeta):
         return (self.season.schedule['t1']
                 .append(self.season.schedule['t2'])
                 .value_counts())
+
 
 class SeasonSimulationException(Exception):
     """ Signifies an unrecoverable error during simulation """

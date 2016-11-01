@@ -1,12 +1,19 @@
 """ Unit test SeasonSimulator base class """
 import numpy as np
 import pandas as pd
-from context import ffl_predictor
 from ffl_predictor import Season
 from ffl_predictor import SeasonStateException
 from ffl_predictor import SeasonSimulator
 from ffl_predictor import SeasonSimulationException
 import pytest
+
+
+class DummySeasonSimulator(SeasonSimulator):
+    """ Dummy implementation to allow instantiation and testing of class methods """
+
+    def simulate(self, season):
+        return season
+
 
 @pytest.fixture()
 def sample_season():
@@ -26,12 +33,6 @@ def sample_season():
         dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)]))
     return Season(schedule, scores)
 
-class DummySeasonSimulator(SeasonSimulator):
-    """ Dummy implementation to allow instantiation and testing of class methods """
-
-    def simulate(self, season):
-        return season
-
 def test_valid_season_for_simulation_true(sample_season):
     DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
 
@@ -44,10 +45,10 @@ def test_valid_season_for_simulation_extra_score(sample_season):
 
 def test_valid_season_for_simulation_duplicate_game(sample_season):
     with pytest.raises(SeasonStateException):
-         sample_season.schedule = sample_season.schedule.append(pd.DataFrame(np.array([
+        sample_season.schedule = sample_season.schedule.append(pd.DataFrame(np.array([
             ('team1', 'team3', 2)],
             dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)])))
-         DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
+        DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
 
 def test_valid_season_for_simulation_too_many_scores(sample_season):
     with pytest.raises(SeasonStateException):
@@ -57,8 +58,7 @@ def test_valid_season_for_simulation_too_many_scores(sample_season):
         DummySeasonSimulator(sample_season).is_valid_season_for_simulation()
 
 def test_has_unplayed_games_true(sample_season):
-         DummySeasonSimulator(sample_season).has_unplayed_games()
-
+    DummySeasonSimulator(sample_season).has_unplayed_games()
 
 def test_has_unplayed_games_false(sample_season):
     with pytest.raises(SeasonSimulationException):
