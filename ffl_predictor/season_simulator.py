@@ -12,7 +12,7 @@ class RegularSeasonSimulator(metaclass=ABCMeta):
         self.season = season
 
     @abstractmethod
-    def simulate(self, season):
+    def simulate(self):
         pass
 
     @staticmethod
