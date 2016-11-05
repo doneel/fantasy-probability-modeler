@@ -39,8 +39,8 @@ class RegularSeasonSimulator(metaclass=ABCMeta):
 
     @staticmethod
     def _get_played_games_per_team(scores):
-        return (scores[['team', 'week']]
-            .groupby('team', as_index=False)
+        return (scores
+            .groupby(level=['team'])
             .size())
 
     @staticmethod

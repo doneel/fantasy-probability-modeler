@@ -17,12 +17,13 @@ class DummyRegularSeasonSimulator(RegularSeasonSimulator):
 
 @pytest.fixture()
 def sample_season():
-    scores = pd.DataFrame(np.array([
+    scores = (pd.DataFrame(np.array([
             ('team1', 1, 1.0), ('team1', 2, 1.0),
             ('team2', 1, 0.0), ('team2', 2, 10.0),
             ('team3', 1, 1.0), ('team3', 2, 2.0),
             ('team4', 1, 3.0), ('team4', 2, 4.0)],
         dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)]))
+        .set_index(['team', 'week']))
     schedule = pd.DataFrame(np.array([
             ('team1', 'team2', 1),
             ('team3', 'team4', 1),
@@ -38,9 +39,7 @@ def test_valid_season_for_simulation_true(sample_season):
 
 def test_valid_season_for_simulation_extra_score(sample_season):
     with pytest.raises(SeasonStateException):
-        sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
-           [('team1', 3, 4.0)],
-            dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
+        sample_season.scores.loc[('team1', 3), 'score'] =  41.0
         DummyRegularSeasonSimulator(sample_season)
 
 def test_valid_season_for_simulation_duplicate_game(sample_season):
@@ -52,9 +51,8 @@ def test_valid_season_for_simulation_duplicate_game(sample_season):
 
 def test_valid_season_for_simulation_too_many_scores(sample_season):
     with pytest.raises(SeasonStateException):
-        sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array(
-            [('team1', 3, 4.0), ('team1', 4, 4.0)],
-            dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
+        sample_season.scores.loc[('team1', 3), 'score'] =  4.0
+        sample_season.scores.loc[('team1', 4), 'score'] =  4.0
         DummyRegularSeasonSimulator(sample_season)
 
 def test_has_unplayed_games_true(sample_season):
@@ -62,10 +60,8 @@ def test_has_unplayed_games_true(sample_season):
 
 def test_has_unplayed_games_false(sample_season):
     with pytest.raises(RegularSeasonSimulationException):
-        sample_season.scores = sample_season.scores.append(pd.DataFrame(np.array([
-                ('team1', 4, 4.0),
-                ('team2', 4, 4.0),
-                ('team3', 4, 4.0),
-                ('team4', 3, 4.0)],
-            dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)])))
+        sample_season.scores.loc[('team1', 4), 'score'] =  4.0
+        sample_season.scores.loc[('team2', 4), 'score'] =  4.0
+        sample_season.scores.loc[('team3', 4), 'score'] =  4.0
+        sample_season.scores.loc[('team4', 3), 'score'] =  4.0
         DummyRegularSeasonSimulator(sample_season)

@@ -7,12 +7,14 @@ from ffl_predictor import Season
 
 @pytest.fixture()
 def sample_season():
-    scores = pd.DataFrame(np.array([
+    scores = (pd.DataFrame(np.array([
             ('team1', 1, 1.0), ('team1', 2, 1.0),
             ('team2', 1, 0.0), ('team2', 2, 10.0),
             ('team3', 1, 1.0), ('team3', 2, 2.0),
             ('team4', 1, 3.0), ('team4', 2, 4.0)],
         dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)]))
+        .set_index(['team', 'week']))
+
     schedule = pd.DataFrame(np.array([
             ('team1', 'team2', 1),
             ('team3', 'team4', 1),

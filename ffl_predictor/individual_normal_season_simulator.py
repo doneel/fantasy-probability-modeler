@@ -34,8 +34,11 @@ class IndividualNormalSeasonSimulator(RegularSeasonSimulator):
                 .rename(columns={'t1': 'team'})
                 .append(self.season.schedule[['t2', 'week']]
                             .rename(columns={'t2': 'team'}))
-                .merge(self.season.scores, on=['team', 'week'], how='outer')
+                .set_index(['team', 'week'])
+                .join(self.season.scores, on=['team', 'week'], how='outer')
         )
+        print(all_scheduled)
+        return
         all_scheduled.index = pd.MultiIndex.from_arrays(
                 [all_scheduled['team'], all_scheduled['week']])
         all_scheduled = all_scheduled['score']
@@ -49,8 +52,3 @@ class IndividualNormalSeasonSimulator(RegularSeasonSimulator):
         combined_data.index = pd.MultiIndex.from_arrays(
             [combined_data['team'], combined_data['week']])
         combined_data = combined_data['score']
-        print(all_scheduled[unplayed_2])
-        print(combined_data)
-        all_scheduled[unplayed_2] = combined_data
-        print(all_scheduled)
-        return all_scheduled
