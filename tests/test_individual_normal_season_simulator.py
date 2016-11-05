@@ -27,7 +27,6 @@ def sample_season():
         dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)]))
     return Season(schedule, scores)
 
-
 def test_simulate(sample_season):
     expected_scores = (pd.DataFrame(np.array([
             ('team1', 1, 1.0), ('team1', 2, 1.0), ('team1', 3, 1.0), ('team1', 4, 1.0),

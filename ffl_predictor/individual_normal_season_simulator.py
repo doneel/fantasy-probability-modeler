@@ -8,7 +8,7 @@ class IndividualNormalSeasonSimulator(RegularSeasonSimulator):
     """ Treats team scores as independent static normal distributions """
 
     def __init__(self, season):
-        super().__init__(season) #TODO: Figure out this syntax
+        super().__init__(season)
 
     def simulate(self):
         all_scheduled = (
@@ -19,12 +19,11 @@ class IndividualNormalSeasonSimulator(RegularSeasonSimulator):
                 .set_index(['team', 'week'])
                 .join(self.season.scores, how='outer')
         )
-        np.random.seed(1)
         unplayed = all_scheduled['score'].isnull()
         combined_data = (mean_var_scores(self.season.scores)
                          .join(all_scheduled[unplayed]))
         all_scheduled['score'][unplayed] = (
-                np.random.normal(size = unplayed.sum())
+                np.random.normal(size=unplayed.sum())
                 * np.sqrt(combined_data['var'])
                 + combined_data['mean'])
         return all_scheduled
