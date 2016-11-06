@@ -3,7 +3,7 @@ import numpy.testing as npt
 import pandas as pd
 
 
-def assert_frames_equal(actual, expected, use_close=False):
+def assert_frames_equal(actual, expected, use_close=False, rtol=1e-07, atol=0):
     """
     Source: http://nbviewer.jupyter.org/gist/jiffyclub/ac2e7506428d5e1d587b
     Compare DataFrame items by index and column and
@@ -22,9 +22,12 @@ def assert_frames_equal(actual, expected, use_close=False):
 
     """
     if use_close:
-        comp = npt.assert_allclose
+        def comp(actual, expected):
+            npt.assert_allclose(actual, expected, rtol=rtol, atol=atol)
     else:
         comp = npt.assert_equal
+
+    print(comp)
 
     assert (isinstance(actual, pd.DataFrame) and
             isinstance(expected, pd.DataFrame)), \
