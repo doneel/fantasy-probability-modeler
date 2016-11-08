@@ -5,11 +5,11 @@ import pandas
 
 def read_scores(file_path):
     """Load data into fully normalized numpy dataset"""
-    return pandas.DataFrame(
-        np.genfromtxt(
+    return (pandas.DataFrame(np.genfromtxt(
             file_path,
             delimiter=',',
             dtype=[('team', np.str, 8), ('week', np.int), ('score', np.float)]))
+        .set_index(['team', 'week']))
 
 
 def read_schedule(file_path):
@@ -20,6 +20,3 @@ def read_schedule(file_path):
             delimiter=',',
             dtype=[('t1', np.str, 8), ('t2', np.str, 8), ('week', np.int)]))
 
-
-read_scores('./data/scores.csv')
-read_schedule('./data/schedule.csv')
