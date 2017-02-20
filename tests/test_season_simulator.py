@@ -1,6 +1,7 @@
 """ Unit test RegularSeasonSimulator base class """
 import numpy as np
 import pandas as pd
+from context import ffl_predictor
 from ffl_predictor import Season
 from ffl_predictor import SeasonStateException
 from ffl_predictor import RegularSeasonSimulator
